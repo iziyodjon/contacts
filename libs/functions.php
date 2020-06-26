@@ -93,7 +93,7 @@ function updateUserInfo($get,$post = null,$files = null)
     $phone_number = $post['phone_number'];
     $address = $post['address'];
     $email = $post['email'];
-    $password = $post['password'];
+    $password = md5($post['password']);
     $status = $post['status'];
     $avatar = avatarUser($files['avatar']);
     $soc_vk = $post['soc_vk'];
