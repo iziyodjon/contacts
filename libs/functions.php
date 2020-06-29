@@ -9,6 +9,18 @@ function dd($data){
     echo "</pre>";
 }
 
+function adUser($email,$password){
+    $pdo = new PDO('mysql:host=localhost;dbname=adress_book', 'root', '');
+
+    $sql = "INSERT INTO users (email,password) VALUES (:email,:password)";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['email' => $email, 'password' => $password]);
+
+    $lastID =  $pdo->lastInsertId();
+    return $lastID;
+}
+
 
 
 // Add user
