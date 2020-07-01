@@ -404,7 +404,4 @@ function delUser($id)
         $stmt->execute();
     }
 
-
-
-
 }
