@@ -1,33 +1,46 @@
-<?require_once (dirname(__FILE__).'/include/header.php');?>
-
 <?
-// Get all data current user
-$id = $_GET['id'];
-$del = $_GET['user'];
-
-if(!empty($id) and !empty($del)){
-    $res = updateUserInfo($_GET,$_POST,$_FILES);
-}
+// Подключаю все функции
+require_once ('libs/functions.php');
 
 // Получаем всех пользователей
 $users = getAllUsers();
-
-/*$email = 'test@mail.ru';
-$password = '12345';
-
-$adUser = adUser($email,$password);
-
-dd($adUser);
-
-exit;*/
-
 ?>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Contacts</title>
+        <meta name="description" content="Chartist.html">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
+        <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="css/vendors.bundle.css">
+        <link id="appbundle" rel="stylesheet" media="screen, print" href="css/app.bundle.css">
+        <link id="myskin" rel="stylesheet" media="screen, print" href="css/skins/skin-master.css">
+        <link rel="stylesheet" media="screen, print" href="css/fa-solid.css">
+        <link rel="stylesheet" media="screen, print" href="css/fa-brands.css">
+        <link rel="stylesheet" media="screen, print" href="css/fa-regular.css">
+
+    </head>
+<body>
+<main id="js-page-content" role="main" class="page-content">
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class='subheader-icon fal fa-plus-circle'></i> Contacts
+            <small>
+                A simple contact page
+            </small>
+        </h1>
+
+    </div>
+
+
         <div class="row">
             <div class="col-xl-12">
-                <a class="btn btn-success" href="useradd.php">Add User</a>
+                <a class="btn btn-success" href="add_user.php">Add User</a>
 
                 <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
-                    <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Filter contacts">
+            <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Filter contacts">
                     <div class="btn-group btn-group-lg btn-group-toggle hidden-lg-down ml-3" data-toggle="buttons">
                         <label class="btn btn-default active">
                             <input type="radio" name="contactview" id="grid" checked="" value="grid"><i class="fas fa-table"></i>
@@ -55,20 +68,20 @@ exit;*/
                                     <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="useredit.php?user=edit&id=<?=$user['id']?>">
+                                    <a class="dropdown-item" href="edit_info.php?id=<?=$user['id']?>">
                                         <i class="fa fa-edit"></i>
                                     Edit Information</a>
-                                    <a class="dropdown-item" href="usersecurity.php?user=secure&id=<?=$user['id']?>"">
+                                    <a class="dropdown-item" href="set_secure.php?id=<?=$user['id']?>"">
                                         <i class="fa fa-lock"></i>
                                     Security</a>
-                                    <a class="dropdown-item" href="userstatus.php?user=status&id=<?=$user['id']?>"">
+                                    <a class="dropdown-item" href="set_status.php?id=<?=$user['id']?>"">
                                         <i class="fa fa-sun"></i>
                                     Set Status</a>
-                                    <a class="dropdown-item" href="useravatar.php?user=avatar&id=<?=$user['id']?>"">
+                                    <a class="dropdown-item" href="upload_avatar.php?id=<?=$user['id']?>"">
                                         <i class="fa fa-camera"></i>
                                         Change Media
                                     </a>
-                                    <a href="/?user=del&id=<?=$user['id']?>" class="dropdown-item deluser">
+                                    <a href="delete.php?id=<?=$user['id']?>" class="dropdown-item deluser">
                                         <i class="fa fa-window-close"></i>
                                         Delete User
                                     </a>
@@ -113,4 +126,57 @@ exit;*/
         <?endforeach;?>
 
         </div><! #js-contacts-->
-<?require_once ('include/footer.php');?>
+
+</main>
+
+<script src="js/vendors.bundle.js"></script>
+<script src="js/app.bundle.js"></script>
+<script>
+
+    /*  function delUser(id,url) {
+          $.ajax({
+              type: "POST",
+              data: {id: id,avatar: url},
+              url: "ajax/del_user.php"
+          }).done(function(){
+              alert("Вы уверены что хотите удалить ?");
+              location.reload();
+          });
+      }*/
+
+    $(document).ready(function()
+    {
+
+
+        $('input[type=radio][name=contactview]').change(function()
+        {
+            if (this.value == 'grid')
+            {
+                $('#js-contacts .card').removeClassPrefix('mb-').addClass('mb-g');
+                $('#js-contacts .col-xl-12').removeClassPrefix('col-xl-').addClass('col-xl-4');
+                $('#js-contacts .js-expand-btn').addClass('d-none');
+                $('#js-contacts .card-body + .card-body').addClass('show');
+
+            }
+            else if (this.value == 'table')
+            {
+                $('#js-contacts .card').removeClassPrefix('mb-').addClass('mb-1');
+                $('#js-contacts .col-xl-4').removeClassPrefix('col-xl-').addClass('col-xl-12');
+                $('#js-contacts .js-expand-btn').removeClass('d-none');
+                $('#js-contacts .card-body + .card-body').removeClass('show');
+            }
+
+        });
+
+        //initialize filter
+        initApp.listFilter($('#js-contacts'), $('#js-filter-contacts'));
+
+
+
+
+
+    });
+
+</script>
+</body>
+</html>
